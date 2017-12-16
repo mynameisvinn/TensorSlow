@@ -24,9 +24,10 @@ class Operation:
     def __init__(self, input_nodes=[]):
         """Construct Operation
         """
-        self.input_nodes = input_nodes
 
-        # Initialize list of consumers (i.e. nodes that receive this operation's output as input)
+        self.input_nodes = input_nodes  # will consume from input nodes
+
+        # node's consumers (i.e. nodes that receive this operation's output as input)
         self.consumers = []
 
         # Append this operation to the list of consumers of all input nodes
@@ -45,7 +46,10 @@ class Operation:
 
 class placeholder:
     """Represents a placeholder node that has to be provided with a value
-       when computing the output of a computational graph
+       when computing the output of a computational graph.
+
+       placeholders only have consumers; placeholders do not consume from any other
+       nodes.
     """
 
     def __init__(self):

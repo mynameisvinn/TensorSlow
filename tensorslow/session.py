@@ -4,15 +4,15 @@ from tensorslow.graph import placeholder
 from tensorslow.graph import Variable
 
 class Session:
-    """Represents a particular execution of a computational graph.
+    """
+    the session performs post order traversal and then executes the graph. sess
+    does not perform topological sort because not all nodes need to be executed.
     """
 
-    def run(self, operation, feed_dict={}):
-        """Computes the output of an operation
 
-        Args:
-          operation: The operation whose output we'd like to compute.
-          feed_dict: A dictionary that maps placeholders to values for this session
+    def run(self, operation, feed_dict={}):
+        """
+        computed outputs exist only for the duration of session.
         """
 
         # Perform a post-order traversal of the graph to bring the nodes into the right order

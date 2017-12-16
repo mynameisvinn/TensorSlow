@@ -7,9 +7,11 @@ class GradientDescentOptimizer:
         self.learning_rate = learning_rate
 
     def minimize(self, loss):
+        # loss refers to loss function, which itself is a node operation
         learning_rate = self.learning_rate
 
         class MinimizationOperation(Operation):
+            # Minimizationoperation is a node that can be passed to a session
             def compute(self):
                 # Compute gradients
                 grad_table = compute_gradients(loss)
@@ -30,6 +32,8 @@ from queue import Queue
 
 
 def compute_gradients(loss):
+    # loss is the loss function, which is a node
+
     # grad_table[node] will contain the gradient of the loss w.r.t. the node's output
     grad_table = {}
 
@@ -39,8 +43,8 @@ def compute_gradients(loss):
     # Perform a breadth-first search, backwards from the loss
     visited = set()
     queue = Queue()
-    visited.add(loss)
-    queue.put(loss)
+    visited.add(loss) 
+    queue.put(loss)  # bfs, starting with the loss function node
 
     while not queue.empty():
         node = queue.get()
@@ -52,7 +56,7 @@ def compute_gradients(loss):
             #
             grad_table[node] = 0
 
-            # Iterate all consumers
+            # we will compute the gradient wrt to the node's consumers
             for consumer in node.consumers:
 
                 # Retrieve the gradient of the loss w.r.t. consumer's output
@@ -87,7 +91,7 @@ def compute_gradients(loss):
         #
         if hasattr(node, "input_nodes"):
             for input_node in node.input_nodes:
-                if not input_node in visited:
+                if not input_node in visited:  # we only want nodes that havent been registered
                     visited.add(input_node)
                     queue.put(input_node)
 
